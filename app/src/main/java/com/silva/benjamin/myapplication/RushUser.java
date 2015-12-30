@@ -6,7 +6,7 @@ import co.uk.rushorm.core.RushCore;
 import co.uk.rushorm.core.RushObject;
 import co.uk.rushorm.core.annotations.RushList;
 
-public class User extends RushObject {
+public class RushUser extends RushObject {
 
     public String id;
     private String username;
@@ -29,7 +29,7 @@ public class User extends RushObject {
         this.skills = skills;
     }
 
-    public User() {
+    public RushUser() {
     }
 
     @Override

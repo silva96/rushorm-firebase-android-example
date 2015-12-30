@@ -11,6 +11,7 @@ import com.firebase.client.ValueEventListener;
 
 import co.uk.rushorm.core.RushCore;
 import co.uk.rushorm.core.RushSearch;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,12 +39,29 @@ public class MainActivity extends AppCompatActivity {
         userRef.addListenerForSingleValueEvent(listener);
     }
     public void asd(DataSnapshot snapshot){
-        User user = snapshot.getValue(User.class);
+
+        //Rush test
+        RushUser user = snapshot.getValue(RushUser.class);
         user.save();
-        User test = new RushSearch().whereId(user.getId()).findSingle(User.class);
+        RushUser test = new RushSearch().whereId(user.getId()).findSingle(RushUser.class);
         Log.d("TEST", "User id: " + test.getId());
         Log.d("TEST", "User username: " + test.getUsername());
         for(Skill s : test.getSkills()){
+            Log.d("TEST", "Skill id: " + s.getId());
+            Log.d("TEST", "Skill name: " + s.getName());
+        }
+
+        //realm test
+        // Obtain a Realm instance
+        RealmUser realmUser = snapshot.getValue(RealmUser.class);
+        Realm realm = Realm.getInstance(this);
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(realmUser);
+        realm.commitTransaction();
+        RealmUser test2 = realm.where(RealmUser.class).equalTo("id", realmUser.getId()).findFirst();
+        Log.d("TEST", "RealmUser id: " + test2.getId());
+        Log.d("TEST", "RealmUser username: " + test2.getUsername());
+        for(RealmSkill s : test2.getSkills()){
             Log.d("TEST", "Skill id: " + s.getId());
             Log.d("TEST", "Skill name: " + s.getName());
         }
